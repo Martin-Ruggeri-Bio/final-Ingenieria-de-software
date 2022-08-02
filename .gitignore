@@ -1,0 +1,5 @@
+Django-Red-Social/
+env/
+__pycache__/
+requirement.txt
+*.log
