@@ -4,7 +4,7 @@
  * If you need the full config, get it from here:
  * https://unpkg.com/browse/tailwindcss@latest/stubs/defaultConfig.stub.js
  */
-
+const colors = require('tailwindcss/colors')
 module.exports = {
     /**
      * Stylesheet generation mode.
@@ -49,12 +49,25 @@ module.exports = {
          */
         // '../../**/*.py'
     ],
-    darkMode: false, // or 'media' or 'class'
+    darkMode: 'media', // or 'media' or 'class'
     theme: {
-        extend: {},
+        extend: {
+            'dark-main': '#18191A',
+            'dark-second': '#242526',
+            'dark-third': '#3A3B3C',
+            'dark-txt': '#B8BBBF',
+            sky: colors.sky,
+            teal: colors.teal,
+            rose: colors.rose,
+        },
     },
     variants: {
-        extend: {},
+        extend: {
+            display: ['group-hover'],
+            transform: ['group-hover'],
+            scale: ['group-hover'],
+            textOpacity: ['dark'],
+        },
     },
     plugins: [
         /**
@@ -66,5 +79,6 @@ module.exports = {
         require('@tailwindcss/typography'),
         require('@tailwindcss/line-clamp'),
         require('@tailwindcss/aspect-ratio'),
+        require('tailwind-scrollbar-hide'),
     ],
 }
