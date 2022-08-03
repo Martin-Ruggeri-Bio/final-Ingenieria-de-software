@@ -38,7 +38,7 @@ class Profile(models.Model):
     #un perfil le pertenece a un unico usuario, y un usuario tiene un unico perfil
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     picture = models.ImageField(default='users/user_default_profile.png', upload_to=user_directory_path_profile)
-    banner = models.ImageField(default='users/user_default_bg.jpg', upload_to=user_directory_path_banner)
+    banner = models.ImageField(default='users/user_default_bg.png', upload_to=user_directory_path_banner)
     date_created = models.DateField(auto_now_add=True)
     location = models.CharField(max_length=50, null=True, blank=True)
     birthday = models.DateField(null=True, blank=True)
