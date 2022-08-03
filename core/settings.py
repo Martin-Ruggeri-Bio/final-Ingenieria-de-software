@@ -1,18 +1,19 @@
 from pathlib import Path
 import os
 from telnetlib import AUTHENTICATION
+import environ
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+env = environ.Env()
+environ.Env.read_env()
+
+ENVIRONMENT = env
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--6ff$j!7)5erlutcy_3gtn1v7b1m^t038k-*!-j1-h@nb6$-z$'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = 'RENDER' not in os.environ
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 INSTALLED_APPS = [
@@ -26,11 +27,14 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'core',
     'social',
+    'accounts',
     'tailwind',
     'theme',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'crispy_forms',
+    'crispy_tailwind',
 ]
 
 SITE_ID = 1
@@ -39,10 +43,28 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
+
 AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+# ================ ALLAUTH ==================== #
+ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_UNIQUE = True
+AUTH_USER_MODEL="accounts.User"
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 3
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT =300
+LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "account_login"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
