@@ -39,6 +39,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     picture = models.ImageField(default='users/user_default_profile.png', upload_to=user_directory_path_profile)
     banner = models.ImageField(default='users/user_default_bg.png', upload_to=user_directory_path_banner)
+    followers = models.ManyToManyField(User, blank=True, related_name="followers")
     date_created = models.DateField(auto_now_add=True)
     location = models.CharField(max_length=50, null=True, blank=True)
     birthday = models.DateField(null=True, blank=True)

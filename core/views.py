@@ -9,17 +9,20 @@ from social.forms import SocialPostForm
 class HomeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         logged_in_user=request.user
-        posts = SocialPost.objects.all()
+        #filtramos los post de este perfil para que sean sean solo de los usuario que sigo ordenados por fecha de creacion
+        posts = SocialPost.objects.filter(author__profile__followers__in=[logged_in_user.id]).order_by('-created_on')
         form = SocialPostForm()
         context={
             'posts':posts,
             'form':form
         }
         return render(request, 'pages/index.html', context)
-    
+
     def post(self, request, *args, **kwargs):
         logged_in_user=request.user
-        posts = SocialPost.objects.all()
+        posts = SocialPost.objects.filter(
+                author__profile__followers__in=[logged_in_user.id]
+            ).order_by('-created_on')
         form = SocialPostForm(request.POST, request.FILES)
         files = request.FILES.getlist('image')
         if form.is_valid():
